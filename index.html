@@ -1,9 +1,59 @@
+<!DOCTYPE html>
 <html>
-	<head>
-		<title>hello</title>
-	</head>
-	<body>
-		<p>hello world</p>
-	</body>
+  <head>
+    <title>hello</title>
+    <style>
+      body {
+        font-family: "Courier New", Courier, monospace;
+        font-size: 8em;
+        margin-left: 20%;
+      }
+    </style>
+  </head>
+  <body>
+    <p id="text">Hello</p>
+    <script>
+      const frames = [
+        { text: "", endText: "_", repeat: 4, duration: 400 },
+        { text: "", endText: "Hello_", repeat: 1, duration: 200 },
+        { text: "Hello", endText: "Hello_", repeat: 4, duration: 400 },
+        { text: "", endText: "", repeat: 1, duration: 400 },
+        { text: "", endText: "You have been....", repeat: 1, duration: 150 },
+        { text: "You have been....", endText: "", repeat: 1, duration: 1000 },
+        { text: "", endText: "", repeat: 1, duration: 400 },
+        { text: "", endText: "GNOMED !!!! !!! !!! !!!!", repeat: 1, duration: 50 },
+      ];
+      function animate(frameIndex, textIndex, repeat) {
+        const frame = frames[frameIndex];
+        if (!frame) {
+          return;
+        }
+        document.getElementById("text").innerText =
+          frame.text +
+          frame.endText.substr(
+            frame.text.length,
+            textIndex
+          );
+		if(frame.text.length && !textIndex) {
+			textIndex = frame.text.length;
+		}
+        if (textIndex >= frame.endText.length) {
+          textIndex = 0;
+          repeat += 1;
+        } else {
+          textIndex += 1;
+        }
+        if (repeat >= frame.repeat) {
+          frameIndex += 1;
+          textIndex = 0;
+          repeat = 0;
+        }
+        setTimeout(
+          () => animate(frameIndex, textIndex, repeat),
+          frame.duration
+        );
+      }
+      animate(0, 0, 0);
+    </script>
+  </body>
 </html>
-
